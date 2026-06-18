@@ -1,0 +1,335 @@
+"""
+OCR pipeline using Qwen2.5-VL with few-shot prompting for handwritten
+scientific/technical notes (text, LaTeX math, chemical structures, tables).
+
+Stages:
+    1. OCR        -> transcribe target image using few-shot examples
+    2. Evaluate   -> WER scoring against ground truth (written to wer_report.txt)
+    3. Critique   -> a second LLM pass checks rule adherence (written to critique_report.txt)
+
+All intermediate noise (raw prompts, full token dumps) is suppressed.
+Only final artifacts are written to disk.
+"""
+import os
+CACHE_DIR = "/fs/nexus-scratch/vyomwal5/anaconda3/envs/whisper/hf_cache"
+os.environ["HF_HOME"] = CACHE_DIR
+import warnings
+warnings.filterwarnings("ignore")
+import re
+import json
+from dataclasses import dataclass
+from pathlib import Path
+
+import torch
+from PIL import Image
+import cv2
+from transformers import AutoProcessor, Qwen2_5_VLForConditionalGeneration
+from jiwer import process_words
+import numpy as np
+
+# --------------------------------------------------------------------------
+# Config
+# --------------------------------------------------------------------------
+
+
+
+MODEL_ID = "Qwen/Qwen2.5-VL-7B-Instruct"
+MAX_NEW_TOKENS = 1024
+
+INPUT_DIR = Path(".")
+OUTPUT_DIR = Path("outputs")
+OUTPUT_DIR.mkdir(exist_ok=True)
+
+EXAMPLE_IMAGE_PATH = INPUT_DIR / "example.jpg"
+TARGET_IMAGE_PATH = INPUT_DIR / "test.jpg"
+GROUND_TRUTH_PATH = INPUT_DIR / "ground_truth.txt"
+
+OCR_RESULT_PATH = OUTPUT_DIR / "result.txt"
+WER_REPORT_PATH = OUTPUT_DIR / "wer_report.txt"
+CRITIQUE_REPORT_PATH = OUTPUT_DIR / "critique_report.txt"
+REPORT_PATH = OUTPUT_DIR / "extracted_report.json"
+ 
+PADDLE_RESULT_PATH = OUTPUT_DIR / "result_paddleocr.txt"
+PADDLE_WER_REPORT_PATH = OUTPUT_DIR / "wer_report_paddleocr.txt"
+ 
+TESSERACT_RESULT_PATH = OUTPUT_DIR / "result_tesseract.txt"
+TESSERACT_WER_REPORT_PATH = OUTPUT_DIR / "wer_report_tesseract.txt"
+
+
+# --------------------------------------------------------------------------
+# Prompt
+# --------------------------------------------------------------------------
+
+SYSTEM_PROMPT_TEXT = """You are an OCR and document understanding system specialized in transcribing handwritten and printed scientific/technical content with full structural fidelity. Transcribe the image following these rules:
+1. Text and line structure: Preserve all original line breaks exactly as they appear in the image. Do not merge separate lines into a single line, and do not split a single line into multiple lines. If a paragraph wraps naturally, preserve that wrapping as in the source. Do not use Latex here.
+2. Mathematical content: Transcribe all mathematical expressions, equations, and symbols using LaTeX notation. This includes fractions, degrees, exponents, subscripts, superscripts, integrals, summations, limits, Greek letters, set notation, and special symbols (≈, ≤, ≥, ∞, ±, ∇, ∂,°, etc.). If there are multiple equations or a sequence of derivation steps, preserve each equation on its own line/step in the order they appear, including intermediate steps and annotations (e.g. "substituting eq. 2 into eq. 1").
+    Always Use inline math wrapped in $...$ block equations wrapped in $$...$$ LaTeX representation.
+3. Arrows and reaction/process notation: Represent arrows using appropriate notation: → for forward arrows, ⇌ for equilibrium/reversible arrows, ⇒ for implication, ↑ and ↓ for increase/decrease or gas evolution/precipitate. If arrows connect steps in a process, derivation, or reaction, preserve the sequence and any text labels above/below the arrow (e.g. conditions, catalysts, reagents written on top of a reaction arrow).
+4. Diagrams, figures, and hand-drawn chemical structures and reaction equations: If the image contains a diagram, plot, figure, hand-drawn molecular/structural formula, or any other visual content that cannot be represented as text, tables, or LaTeX, do not attempt to force it into symbols. For chemical structures specifically, describe: the type of structure (e.g. skeletal/line structure, Lewis structure, ring system), visible functional groups, ring sizes and substitution pattern, any labeled atoms or stereochemistry markers (wedge/dash bonds), and any reagents, conditions, or concentrations written alongside the structure (e.g. "0.5 M HCl, reflux, 2h" written above an arrow). If text (like reagent names or concentrations) appears next to or on a diagram and is legible, extract and report it as text inside the figure description rather than omitting it. Insert a description in the position where it appears in the original layout, using this exact tag format:
+    [FIGURE: <a detailed description>]
+    When a reaction shows a starting material structure, an arrow with conditions/reagents above or below it, and a product structure, your figure description must explicitly walk through each of these three parts in order: (1) the starting structure and its label, (2) the reagents/conditions written on the arrow, (3) the resulting product structure and its label. Mention ring type (e.g. benzene ring drawn as hexagon with inscribed circle), exact substituent and where it's attached (e.g. top vertex), and transcribe any text labels under structures verbatim.
+
+5. Tables: If content is tabular (rows/columns of data, not a diagram) which is equally spaced content with similar type of text in the same column, render it as a markdown table rather than a figure description.
+6. General fidelity: Do not paraphrase or correct the original content — transcribe exactly what is written, including apparent errors, unless a symbol is genuinely illegible, in which case mark it as [illegible]. Do not add commentary, explanations, or interpretation outside of the figure description blocks."""
+
+FEW_SHOT_ASSISTANT_OUTPUT = """642667335
+Write any two methods for preparation of benzene.
+[FIGURE: A benzene ring drawn as a hexagon with an inscribed circle, indicating aromaticity. No substituents are attached.]
+(1) From Benzoic acid:- (or) Sodium Benzoate.
+
+[FIGURE: A chemical reaction showing sodium benzoate converting to benzene. On the left is a benzene ring (hexagon with inscribed circle) with "COONa" attached at the top vertex via a bond. An arrow points right, with the reagents "NaOH ÷ CaO" written above the arrow shaft. On the right is the product: a benzene ring (hexagon with inscribed circle) with no substituents, plus "+ Na_2CO_3" written alongside it as a co-product.]"""
+
+ASSISTANT_MARKER = "above.\nassistant"
+
+
+# --------------------------------------------------------------------------
+# Model loading
+# --------------------------------------------------------------------------
+
+def load_model():
+    model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
+        MODEL_ID, torch_dtype=torch.float16, device_map="auto"
+    )
+    processor = AutoProcessor.from_pretrained(MODEL_ID)
+    return model, processor
+
+
+def run_chat(model, processor, messages, images, max_new_tokens=MAX_NEW_TOKENS):
+    """Apply chat template, run generation, return decoded text."""
+    text = processor.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True
+    )
+    inputs = processor(text=[text], images=images, return_tensors="pt").to(model.device)
+    output = model.generate(**inputs, max_new_tokens=max_new_tokens)
+    return processor.decode(output[0], skip_special_tokens=True)
+
+
+# --------------------------------------------------------------------------
+# Stage 1: OCR
+# --------------------------------------------------------------------------
+
+def clean_latex_delimiters(text: str) -> str:
+    """Normalize stray \\[ \\] / \\( \\) into $$ / $, and strip code fences."""
+    text = re.sub(r"```(?:latex)?\s*", "", text)
+    text = re.sub(r"\\\[\s*", "$$", text)
+    text = re.sub(r"\s*\\\]", "$$", text)
+    text = re.sub(r"\\\(\s*", "$", text)
+    text = re.sub(r"\s*\\\)", "$", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)  # collapse excess blank lines left behind
+    return text.strip()
+
+
+def run_ocr(model, processor, example_image_path, target_image_path) -> str:
+    example_image = Image.open(example_image_path)
+    target_image = Image.open(target_image_path)
+
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {"type": "image", "image": example_image},
+                {"type": "text", "text": SYSTEM_PROMPT_TEXT},
+            ],
+        },
+        {
+            "role": "assistant",
+            "content": [{"type": "text", "text": FEW_SHOT_ASSISTANT_OUTPUT}],
+        },
+        {
+            "role": "user",
+            "content": [
+                {"type": "image", "image": target_image},
+                {"type": "text", "text": "Now convert this handwritten notes following the same rules and format demonstrated above."},
+            ],
+        },
+    ]
+
+    raw_output = run_chat(model, processor, messages, images=[example_image, target_image])
+
+    if ASSISTANT_MARKER in raw_output:
+        _, transcription = raw_output.split(ASSISTANT_MARKER, 1)
+    else:
+        transcription = raw_output
+
+    return clean_latex_delimiters(transcription)
+
+def ocr_paddleocr(target_image_path) -> str:
+    from paddleocr import PaddleOCR
+
+    ocr_engine = PaddleOCR(use_angle_cls=True, lang="en", enable_mkldnn=False)
+    result = ocr_engine.predict(str(target_image_path))
+
+    lines = result[0]["rec_texts"] if result and "rec_texts" in result[0] else []
+    return "\n".join(lines).strip()
+ 
+ 
+def ocr_tesseract(target_image_path) -> str:
+    """Zero-shot baseline using Tesseract with an Otsu-threshold pass for
+    handwriting. Returns plain transcribed text. No LaTeX/figure-tag awareness."""
+    import pytesseract
+ 
+    img = Image.open(target_image_path).convert("L")
+    arr = np.array(img)
+    _, binary = cv2.threshold(arr, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    binary_img = Image.fromarray(binary)
+ 
+    text = pytesseract.image_to_string(
+        binary_img, config="--oem 3 --psm 6 -l eng --dpi 300"
+    )
+    return text.strip()
+# --------------------------------------------------------------------------
+# Stage 2: WER evaluation
+# --------------------------------------------------------------------------
+
+def normalize_text(text: str) -> str:
+    text = re.sub(r"\[FIGURE:[^\]]*\]", "",text)
+    text = text.lower()
+    text = text.replace("\n", " ").replace("\t", " ")
+    text = re.sub(r"\s+", " ", text)
+   
+    return text.strip()
+
+
+@dataclass
+class WerResult:
+    wer: float
+    substitutions: int
+    deletions: int
+    insertions: int
+    hits: int
+    error_chunks: list
+
+
+def compute_wer(ground_truth_raw: str, prediction_raw: str) -> WerResult:
+    ground_truth = normalize_text(ground_truth_raw)
+    prediction = normalize_text(prediction_raw)
+
+    result = process_words(ground_truth, prediction)
+    gt_words = result.references[0]
+    pred_words = result.hypotheses[0]
+
+    error_chunks = []
+    for chunk in result.alignments[0]:
+        if chunk.type == "equal":
+            continue
+        error_chunks.append({
+            "type": chunk.type,
+            "gt": " ".join(gt_words[chunk.ref_start_idx:chunk.ref_end_idx]),
+            "pred": " ".join(pred_words[chunk.hyp_start_idx:chunk.hyp_end_idx]),
+        })
+
+    return WerResult(
+        wer=result.wer,
+        substitutions=result.substitutions,
+        deletions=result.deletions,
+        insertions=result.insertions,
+        hits=result.hits,
+        error_chunks=error_chunks,
+    )
+
+
+def write_wer_report(wer_result: WerResult, path: Path):
+    lines = [
+        f"WER: {wer_result.wer:.4f} ({wer_result.wer * 100:.2f}%)",
+        f"Substitutions: {wer_result.substitutions}",
+        f"Deletions:     {wer_result.deletions}",
+        f"Insertions:    {wer_result.insertions}",
+        f"Hits:          {wer_result.hits}",
+        "",
+        "=== ERRORS ===",
+    ]
+    for chunk in wer_result.error_chunks:
+        lines.append(f"\n{chunk['type'].upper()}")
+        lines.append(f"GT   : {chunk['gt']}")
+        lines.append(f"PRED : {chunk['pred']}")
+
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
+# --------------------------------------------------------------------------
+# Stage 3: Evaluator / critique agent
+# --------------------------------------------------------------------------
+
+def run_critique(model, processor, prediction: str) -> str:
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": f"Given Report: {prediction}"},
+                {"type": "text", "text": f"Given Rules: {SYSTEM_PROMPT_TEXT}"},
+                {"type": "text", "text": "You are an Evaluator Agent. Go through the report and the rules defined. Find which steps the previous agent missed. Give your evaluation in points."},
+            ],
+        }
+    ]
+    return run_chat(model, processor, messages, images=None)
+
+
+# --------------------------------------------------------------------------
+# Stage 4: Report creation agent
+# --------------------------------------------------------------------------
+
+def extract_report(model, processor, prediction: str) -> str:
+    messages = [{
+        "role": "user",
+        "content": [
+            {"type": "text", "text": f"Given Report: {prediction}"},
+            {"type": "text", "text": """Given is an extracted Report of an experiment. Extract the goal, the conditions, the procedure, and the results in json format with specific heading"""}
+        ]
+    }
+]
+    return run_chat(model, processor, messages, images=None)
+
+# --------------------------------------------------------------------------
+# Main
+# --------------------------------------------------------------------------
+
+def main():
+    model, processor = load_model()
+    import time
+    # Stage 1: OCR
+    print("Running Qwen OCR")
+    start_time = time.time()
+    prediction = run_ocr(model, processor, EXAMPLE_IMAGE_PATH, TARGET_IMAGE_PATH)
+    OCR_RESULT_PATH.write_text(prediction, encoding="utf-8")
+    print(f"Time taken: {time.time()-start_time}")
+    # # Stage 2: WER
+    ground_truth_raw = GROUND_TRUTH_PATH.read_text(encoding="utf-8")
+    wer_result = compute_wer(ground_truth_raw, prediction)
+    write_wer_report(wer_result, WER_REPORT_PATH)
+
+    # --- Engine 2: PaddleOCR (zero-shot baseline) ---
+    print("Running PaddleOCR")
+    start_time = time.time()
+    paddle_prediction = ocr_paddleocr(TARGET_IMAGE_PATH)
+    PADDLE_RESULT_PATH.write_text(paddle_prediction, encoding="utf-8")
+    paddle_wer_result = compute_wer(ground_truth_raw, paddle_prediction)
+    write_wer_report(paddle_wer_result, PADDLE_WER_REPORT_PATH)
+    print(f"Time taken: {time.time()-start_time}")
+ 
+    # --- Engine 3: Tesseract (zero-shot baseline) ---
+    print("Running TesseractOCR")
+    start_time = time.time()
+    tesseract_prediction = ocr_tesseract(TARGET_IMAGE_PATH)
+    TESSERACT_RESULT_PATH.write_text(tesseract_prediction, encoding="utf-8")
+    tesseract_wer_result = compute_wer(ground_truth_raw, tesseract_prediction)
+    write_wer_report(tesseract_wer_result, TESSERACT_WER_REPORT_PATH)
+    print(f"Time taken: {time.time()-start_time}")
+
+    # Stage 3: Critique
+    print("Running Evaluator")
+    critique = run_critique(model, processor, prediction)
+    CRITIQUE_REPORT_PATH.write_text(critique, encoding="utf-8")
+
+    #Stage 4:Extract Json
+    print("Running Json Extractor")
+    report_json = extract_report(model, processor, prediction)
+    a,b = report_json[:-3].split('```json')
+    REPORT_PATH.write_text(b,encoding="utf-8")
+
+    print(f"OCR result      -> {OCR_RESULT_PATH}")
+    print(f"WER report      -> {WER_REPORT_PATH} (WER: {wer_result.wer*100:.2f}%)")
+    print(f"Critique report -> {CRITIQUE_REPORT_PATH}")
+
+
+if __name__ == "__main__":
+    main()

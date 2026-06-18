@@ -1,0 +1,67 @@
+WER: 0.0905 (9.05%)
+Substitutions: 7
+Deletions:     8
+Insertions:    3
+Hits:          184
+
+=== ERRORS ===
+
+DELETE
+GT   : cont. from pg 56
+PRED : 
+
+SUBSTITUTE
+GT   : diglyme
+PRED : diglyme:
+
+DELETE
+GT   : :
+PRED : 
+
+SUBSTITUTE
+GT   : v/v),
+PRED : v/v)
+
+INSERT
+GT   : 
+PRED : 8%
+
+SUBSTITUTE
+GT   : 22.4°c,
+PRED : 22.4c,
+
+DELETE
+GT   : --------------------------------------------------------------------------
+PRED : 
+
+INSERT
+GT   : 
+PRED : 1.5
+
+SUBSTITUTE
+GT   : 1.5e-4
+PRED : e-4
+
+DELETE
+GT   : --------------------------------------------------------------------------
+PRED : 
+
+DELETE
+GT   : +
+PRED : 
+
+SUBSTITUTE
+GT   : min
+PRED : main
+
+SUBSTITUTE
+GT   : intens.)
+PRED : intensity)
+
+INSERT
+GT   : 
+PRED : 30
+
+SUBSTITUTE
+GT   : 30min
+PRED : min

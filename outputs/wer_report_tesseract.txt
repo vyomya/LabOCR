@@ -1,0 +1,47 @@
+WER: 0.9698 (96.98%)
+Substitutions: 138
+Deletions:     55
+Insertions:    0
+Hits:          6
+
+=== ERRORS ===
+
+SUBSTITUTE
+GT   : cont. from pg 56 page 57 project: li electrodeposition
+PRED : a “ a , efectely a ) suse |
+
+DELETE
+GT   : - glyme electrolytes june 4
+PRED : 
+
+SUBSTITUTE
+GT   : electrolyte 240604-b for stable
+PRED : clecbrele tsocor-b , shbe
+
+SUBSTITUTE
+GT   : plating at 30°c electrolyte: 1m litfsi in diglyme : etoh (4:1 v/v), 20 ml tot add 5 mol% 12-crown-4 as additive. stir 20 min → t @ 22.4°c, glovebox h₂o
+PRED : pling ! wore pee lt hit ten oe) | electolte: jn lt fst in igh lojhyme 2 etoh (4: vie) a = “bal bt md bs mel h we crown
+
+DELETE
+GT   : <
+PRED : 
+
+SUBSTITUTE
+GT   : ppm working elec.: glassy c rde (0.3 cm²); ce: li foil; ref: ag/agcl -------------------------------------------------------------------------- deposition run 240604-b1 apply -0.45v vs ag/agcl, 90 min, ω = 1600 rpm j = 0.50 ma/cm² and 0.3 cm² $$\frac{0.5 \text{ ma}}{\text{cm}^2} \cdot 0.3 \text{ cm}^2
+PRED : ns additive. stir lomia > _ t@ 2246 | shvebox ho © ll ppm a werkim elec. + glssy cade (3.0): ce: li fil: | rob: an /an cl 8 a _—_ | moly ~ oy vs ay /as ci 1
+
+DELETE
+GT   : = 1.5 \text{ e-4 a}$$ t = 90
+PRED : 
+
+SUBSTITUTE
+GT   : = 5400 s q = 1.5e-4 a · 5400 s = 0.81 a·s = 0.81 c n = $\frac{q}{zf}$
+PRED : ws 100s pm | st 0,80 alem? and 0. bem® 0.5 ma o3em> > ise-4 a | - 8
+
+SUBSTITUTE
+GT   : $\frac{0.81 \text{ c}}{96485 \text{ c/mol}}$ = $8.4 \text{ e-6 mol}$ $\frac{6.94 \text{ g li}}{\text{mol li}}$ = $5.8 \text{ e-5}$ $$1 e^- = 1 li^+$$ -------------------------------------------------------------------------- electrode temperature test: hot plate at 30°c 0 min 22.4°c
+PRED : oc gt bebe! 14h og | af 48s © joel nfl =~ ess sss ae sr | put 9 +e se li ‘ | \ ed nop 7 nee ee l:-tesi es ps os a
+
+DELETE
+GT   : 20 min 30.1°c film looks grey + dull 1 min 23.1°c 40 min 31.5°c xrd min peak at 5 min 25.6°c 1 hr 32.0°c 2θ = 2.1° (low intens.) 10 min 27.9°c 1 hr 30min 32.6°c shoulder at 2θ = 4.7°
+PRED : 

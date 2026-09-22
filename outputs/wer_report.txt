@@ -1,67 +1,71 @@
-WER: 0.0905 (9.05%)
-Substitutions: 7
-Deletions:     8
-Insertions:    3
-Hits:          184
+WER: 0.9698 (96.98%)
+Substitutions: 117
+Deletions:     75
+Insertions:    1
+Hits:          7
 
 === ERRORS ===
 
-DELETE
-GT   : cont. from pg 56
-PRED : 
+INSERT
+GT   : 
+PRED : 7
+
+SUBSTITUTE
+GT   : cont. from pg 56 page 57 project: li electrodeposition - glyme electrolytes june 4 goal: screen electrolyte 240604-b for stable li plating at 30°c electrolyte: 1m litfsi
+PRED : promoter bulk fabrication for testing project no. 3 book no. 1 1. dissolve al₂o₃ in 10 ml ethanol 2. sonicate al₂o₃ sol'n until dissolved 3. dissolve mn
 
 SUBSTITUTE
 GT   : diglyme
-PRED : diglyme:
+PRED : 8
 
 DELETE
-GT   : :
+GT   : : etoh (4:1 v/v), 20
 PRED : 
 
 SUBSTITUTE
-GT   : v/v),
-PRED : v/v)
-
-INSERT
-GT   : 
-PRED : 8%
-
-SUBSTITUTE
-GT   : 22.4°c,
-PRED : 22.4c,
+GT   : tot add
+PRED : ethanol 4.
 
 DELETE
-GT   : --------------------------------------------------------------------------
-PRED : 
-
-INSERT
-GT   : 
-PRED : 1.5
-
-SUBSTITUTE
-GT   : 1.5e-4
-PRED : e-4
-
-DELETE
-GT   : --------------------------------------------------------------------------
-PRED : 
-
-DELETE
-GT   : +
+GT   : 5 mol% 12-crown-4 as additive.
 PRED : 
 
 SUBSTITUTE
-GT   : min
-PRED : main
+GT   : 20 min → t @ 22.4°c, glovebox h₂o < 1 ppm working elec.: glassy c rde (0.3 cm²); ce: li foil; ref: ag/agcl -------------------------------------------------------------------------- deposition run 240604-b1 apply -0.45v vs ag/agcl, 90 min, ω = 1600 rpm j = 0.50 ma/cm² and 0.3 cm² $$\frac{0.5 \text{ ma}}{\text{cm}^2} \cdot 0.3 \text{
+PRED : mn sol'n until dissolved 5. check stability of sol'n 6. stir al₂o₃ for 30 min 7. 1 wt%: 100 mg mn → add 8 ml of mn sol'n to al₂o₃ sol'n 8. stir 30 min more 9. remove stir bar 10. rotovap at 60°c, 100 rpm, 160 mbar for 20
+
+DELETE
+GT   : cm}^2 = 1.5 \text{ e-4 a}$$ t = 90
+PRED : 
 
 SUBSTITUTE
-GT   : intens.)
-PRED : intensity)
+GT   : = 5400 s q = 1.5e-4 a · 5400 s = 0.81 a·s = 0.81 c n = $\frac{q}{zf}$ =
+PRED : 11. oven at 60°c - 80°c overnight (~24 hrs in oven) 12. actual mn sol'n to al₂o₃ sol'n 10 wt%
 
-INSERT
-GT   : 
-PRED : 30
+DELETE
+GT   : $\frac{0.81 \text{ c}}{96485 \text{ c/mol}}$
+PRED : 
 
 SUBSTITUTE
-GT   : 30min
-PRED : min
+GT   : $8.4 \text{ e-6 mol}$
+PRED : 91.3 mg 5 wt%
+
+DELETE
+GT   : $\frac{6.94 \text{ g li}}{\text{mol li}}$
+PRED : 
+
+SUBSTITUTE
+GT   : $5.8 \text{ e-5}$ $$1
+PRED : 228.6 mg 4 ss.
+
+DELETE
+GT   : e^- = 1 li^+$$ -------------------------------------------------------------------------- electrode temperature test: hot plate at 30°c 0 min 22.4°c 20 min 30.1°c film looks grey + dull 1 min 23.1°c 40 min 31.5°c xrd min peak at
+PRED : 
+
+SUBSTITUTE
+GT   : min 25.6°c 1 hr 32.0°c 2θ = 2.1° (low
+PRED : mg recorded by: tan naccarella date: 2/4/16 verified by:
+
+DELETE
+GT   : intens.) 10 min 27.9°c 1 hr 30min 32.6°c shoulder at 2θ = 4.7°
+PRED : 

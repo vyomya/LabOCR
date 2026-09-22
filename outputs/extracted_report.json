@@ -1,42 +1,28 @@
 
 {
-  "Experiment": {
-    "Title": "Li electrodeposition - glyme electrolytes",
-    "Date": "June 4",
-    "Goal": "Screen electrolyte 240604-B for stable Li plating at 30°C",
-    "Conditions": {
-      "Electrolyte": "1M LiTFSI in diglyme: EtOH (4:1 v/v)",
-      "Total Volume": "20 mL",
-      "Additive": "8% 5 mol% 12-crown-4",
-      "Temperature": "30°C",
-      "Stirring Time": "20 min",
-      "Working Electrode": "glassy C RDE (0.3 cm²)",
-      "Counter Electrode": "Li foil",
-      "Reference Electrode": "Ag/AgCl"
-    },
-    "Procedure": {
-      "Steps": [
-        "Add 8% 5 mol% 12-crown-4 as additive.",
-        "Stir for 20 minutes.",
-        "Apply -0.45V vs Ag/AgCl for 90 minutes at 1600 rpm with a current density of 0.50 mA/cm²."
-      ]
-    },
-    "Results": {
-      "Current Density": "0.50 mA/cm²",
-      "Area of Working Electrode": "0.3 cm²",
-      "Time Duration": "90 min",
-      "Charge (Q)": "0.81 A·s",
-      "Moles of Lithium Deposited (n)": "8.4 E-6 mol",
-      "Mass of Lithium Deposited": "5.8 E-5 g",
-      "Electrode Temperature Test": {
-        "Initial Temperature": "22.4°C",
-        "Final Temperature": "32.6°C after 1 hour 30 minutes",
-        "Film Appearance": "Grey dull",
-        "XRD Analysis": {
-          "Main Peak": "2θ = 2.1° (low intensity)",
-          "Shoulder": "2θ = 4.7°"
-        }
-      }
-    }
+  "goal": "To prepare a promoter bulk fabrication solution for testing using Al₂O₃ and Mn",
+  "conditions": {
+    "temperature": "60°C",
+    "rotation_speed": "100 rpm",
+    "vacuum_pressure": "160 mbar"
+  },
+  "procedure": [
+    "Dissolve Al₂O₃ in 10 mL ethanol",
+    "Sonicate Al₂O₃ sol'n until dissolved",
+    "Dissolve Mn in 8 mL ethanol",
+    "Stir Mn sol'n until dissolved",
+    "Check stability of sol'n",
+    "Stir Al₂O₃ for 30 min",
+    "Add 100 mg Mn to Al₂O₃ sol'n (1 wt%)",
+    "Stir 30 min more",
+    "Remove stir bar",
+    "Rotovap at 60°C, 100 rpm, 160 mbar for 20 min",
+    "Oven at 60°C - 80°C overnight (~24 hrs in oven)",
+    "Actual Mn sol'n to Al₂O₃ sol'n"
+  ],
+  "results": {
+    "10 wt%": "91.3 mg",
+    "5 wt%": "228.6 mg",
+    "4 ss. 5 mg": "5 mg"
   }
 }

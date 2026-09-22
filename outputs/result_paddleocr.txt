@@ -1,78 +1,70 @@
-Pg S6
-age 57
-Pe-
-une 4
-Goal: Screen electrolyte 240604-B for stable Li plating
-at 30℃
-—0~0~0>0H
-20mL tot
-Add 8% S mol%
-12.crowon-4 as additive. Stir 20min
-→ T@ 22.4C, glovebux H2O<1 ppm
-Working elec. : glassy C RDE (0.3cm2), CE: Li foil;
-rcf: Ag/Ag Cl
-Deposition run 240604-B1
-Apply - 0.45v vs Ag/Ag Cl, 90 min, w= 1600rpm
-J=O.SOmA/cm²2
-and 0.3 cm²
-0.S m A
-0.3 cm^2 = 1.SE-4 A
-cm2
-t=90min= S400s
-Q= 1. SE-4 A . SY00 s = 0.81A.s = 0.81 C
-8.4 E- 6 mo1 . 6.94 g L: = 5.8E-5
-Q
-0.81C
-n：
-2F
-96485C/mol
-↑
-mo/ Li
-+:71=-21
--0-
--0.SV u A/A1
-a-
-4:7
-!7
-0
-0
-0
-一
-+7
-0
-0
-11
--N-
-=S
-F
-F.
-S
-+[(h-umo-1) :7]
-F
+7
 3
-1
-1
-0
-F
-0
-F
-LiTFSI
-ElectroeTemperaturetestate30
-Film looks grey+dall
-0min22.4℃
-20 min
-30.1C
-1min 23.1℃
-31.SC
-XRD min peak at
-40min
-20=2.1°(low intens.)
-5min
-Ihr
-25.6C
-32.0C
-Shoulder at 2#=4.7°
-10min
-1hr 30min
-32.6C
-27.9C
+Project No.
+一
+1 g Al2O{3} + Mn
+5w+%Mn= 50mgMn
+10wt%Mn = 100mgmn
+1 w+% mn =
+10 mg Mn
+900mg Al203
+950mg Al2 03
+990mg Al.03
+10
+Dissolve
+Al2O3 in mL ethanol
+2.
+Sonicate
+Al 2O3 sol'n until dissolved
+3.
+Dissolve
+8 mL ethanol:
+Mn
+in
+10+7%:10mgMn×20mgMn91.37mgMn(NO3)2-4H2O
+S4.938, Mn
+251.01gMn(NO3)2.4H2O
+nol Mn
+mol Mn (NO3)2
+4HO
+10w+%:100mgMn→456.90mgMn (NO3)2.41+20
+Stir Mn sol'n antil
+dissolved
+4.
+Check stability of
+5.
+sol'n
+Stir
+for 30 min
+6.
+A12O
+1 wt%  3add 4 mL of Mn s0l'n to Al 2O3 sol'n
+7.
+5wt% 10wt% → add 8mL of Mn sol'n to Al2O3 sol'n
+8.
+Stir 30 min more
+Remove
+stir
+9.
+bar
+Rotovap at 60c, 100rpm, 160 mbar for 20 min
+10.
+over night (~2t his in oven)
+11.
+Oven at
+60°C-80°C
+Actual Mn(NO3)2.4H2O
+1 wt% =
+12.
+91.3mg
+Swt% =
+228.6mg
+10 wt % =
+455. 5mg
+Verified by:
+Date
+Date
+Recorded by:
+Naccarella
+2/4/16
+Ian

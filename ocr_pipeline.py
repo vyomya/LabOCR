@@ -34,14 +34,14 @@ import numpy as np
 
 
 MODEL_ID = "Qwen/Qwen2.5-VL-7B-Instruct"
-MAX_NEW_TOKENS = 1024
+MAX_NEW_TOKENS = 4096
 
 INPUT_DIR = Path(".")
 OUTPUT_DIR = Path("outputs")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 EXAMPLE_IMAGE_PATH = INPUT_DIR / "example.jpg"
-TARGET_IMAGE_PATH = INPUT_DIR / "test.jpg"
+TARGET_IMAGE_PATH = INPUT_DIR / "IMG_6881.jpg"
 GROUND_TRUTH_PATH = INPUT_DIR / "ground_truth.txt"
 
 OCR_RESULT_PATH = OUTPUT_DIR / "result.txt"

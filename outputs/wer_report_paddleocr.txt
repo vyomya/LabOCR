@@ -1,158 +1,46 @@
-WER: 0.7789 (77.89%)
-Substitutions: 114
-Deletions:     36
-Insertions:    5
-Hits:          49
+WER: 0.9799 (97.99%)
+Substitutions: 152
+Deletions:     43
+Insertions:    0
+Hits:          4
 
 === ERRORS ===
 
-DELETE
-GT   : cont. from
-PRED : 
-
 SUBSTITUTE
-GT   : 56 page
-PRED : s6 age
-
-SUBSTITUTE
-GT   : project: li
-PRED : pe- une
+GT   : cont. from pg 56 page 57 project: li electrodeposition - glyme electrolytes june 4 goal: screen electrolyte 240604-b for stable li plating at 30°c electrolyte: 1m litfsi in diglyme : etoh (4:1 v/v),
+PRED : 7 3 project no. 一 1 g al2o{3} + mn 5w+%mn= 50mgmn 10wt%mn = 100mgmn 1 w+% mn = 10 mg mn 900mg al203 950mg al2 03 990mg al.03 10 dissolve al2o3 in
 
 DELETE
-GT   : electrodeposition - glyme electrolytes june
-PRED : 
-
-SUBSTITUTE
-GT   : 30°c electrolyte: 1m
-PRED : 30℃ —0~0~0>0h 20ml
-
-DELETE
-GT   : litfsi in diglyme : etoh (4:1 v/v), 20 ml
-PRED : 
-
-INSERT
-GT   : 
-PRED : 8%
-
-SUBSTITUTE
-GT   : 5
-PRED : s
-
-SUBSTITUTE
-GT   : 12-crown-4
-PRED : 12.crowon-4
-
-SUBSTITUTE
 GT   : 20
-PRED : 20min
-
-DELETE
-GT   : min
 PRED : 
 
 SUBSTITUTE
-GT   : t @ 22.4°c, glovebox
-PRED : t@ 22.4c, glovebux h2o<1
+GT   : tot add 5 mol% 12-crown-4 as additive. stir 20 min → t @ 22.4°c, glovebox h₂o < 1 ppm working elec.: glassy c rde (0.3 cm²); ce: li foil; ref: ag/agcl -------------------------------------------------------------------------- deposition run 240604-b1 apply -0.45v vs ag/agcl, 90 min, ω = 1600 rpm j = 0.50 ma/cm² and 0.3 cm² $$\frac{0.5 \text{ ma}}{\text{cm}^2} \cdot 0.3 \text{ cm}^2 = 1.5 \text{ e-4 a}$$ t = 90 min = 5400 s q = 1.5e-4 a · 5400 s = 0.81 a·s = 0.81 c n = $\frac{q}{zf}$ = $\frac{0.81 \text{ c}}{96485 \text{ c/mol}}$ = $8.4 \text{ e-6 mol}$ $\frac{6.94 \text{ g
+PRED : ethanol 2. sonicate al 2o3 sol'n until dissolved 3. dissolve 8 ml ethanol: mn in 10+7%:10mgmn×20mgmn91.37mgmn(no3)2-4h2o s4.938, mn 251.01gmn(no3)2.4h2o nol mn mol mn (no3)2 4ho 10w+%:100mgmn→456.90mgmn (no3)2.41+20 stir mn sol'n antil dissolved 4. check stability of 5. sol'n stir for 30 min 6. a12o 1 wt% 3add 4 ml of mn s0l'n to al 2o3 sol'n 7. 5wt% 10wt% → add 8ml of mn sol'n to al2o3 sol'n 8. stir 30 min more remove stir 9. bar rotovap at 60c, 100rpm, 160 mbar for 20 min 10. over night (~2t his in oven) 11. oven at 60°c-80°c actual mn(no3)2.4h2o 1 wt%
 
 DELETE
-GT   : h₂o < 1
-PRED : 
-
-INSERT
-GT   : 
-PRED : elec.
-
-SUBSTITUTE
-GT   : elec.:
-PRED : :
-
-SUBSTITUTE
-GT   : (0.3
-PRED : (0.3cm2),
-
-DELETE
-GT   : cm²);
+GT   : li}}{\text{mol li}}$
 PRED : 
 
 SUBSTITUTE
-GT   : ref: ag/agcl --------------------------------------------------------------------------
-PRED : rcf: ag/ag cl
-
-INSERT
-GT   : 
-PRED : -
-
-SUBSTITUTE
-GT   : -0.45v
-PRED : 0.45v
-
-INSERT
-GT   : 
-PRED : ag/ag
-
-SUBSTITUTE
-GT   : ag/agcl,
-PRED : cl,
-
-SUBSTITUTE
-GT   : ω = 1600
-PRED : w= 1600rpm j=o.soma/cm²2
+GT   : $5.8 \text{ e-5}$
+PRED : 12. 91.3mg swt%
 
 DELETE
-GT   : rpm j = 0.50 ma/cm²
+GT   : $$1 e^-
 PRED : 
 
 SUBSTITUTE
-GT   : $$\frac{0.5 \text{ ma}}{\text{cm}^2}
-PRED : 0.s m a
+GT   : 1 li^+$$ -------------------------------------------------------------------------- electrode
+PRED : 228.6mg 10 wt %
 
 DELETE
-GT   : \cdot
+GT   : temperature test: hot plate at 30°c 0 min 22.4°c 20 min 30.1°c film looks grey + dull 1 min 23.1°c 40 min 31.5°c xrd min peak at 5 min 25.6°c 1 hr 32.0°c 2θ
 PRED : 
 
 SUBSTITUTE
-GT   : \text{ cm}^2 = 1.5 \text{ e-4 a}$$ t = 90 min = 5400
-PRED : cm^2 = 1.se-4 a cm2 t=90min= s400s q= 1. se-4 a . sy00
-
-INSERT
-GT   : 
-PRED : =
-
-SUBSTITUTE
-GT   : q
-PRED : 0.81a.s
-
-SUBSTITUTE
-GT   : 1.5e-4 a · 5400 s = 0.81 a·s = 0.81 c n = $\frac{q}{zf}$ = $\frac{0.81 \text{ c}}{96485 \text{ c/mol}}$ = $8.4 \text{ e-6 mol}$ $\frac{6.94 \text{ g li}}{\text{mol li}}$ = $5.8 \text{ e-5}$ $$1 e^- = 1 li^+$$ -------------------------------------------------------------------------- electrode temperature test: hot plate at 30°c
-PRED : 0.81 c 8.4 e- 6 mo1 . 6.94 g l: = 5.8e-5 q 0.81c n： 2f 96485c/mol ↑ mo/ li +:71=-21 -0- -0.sv u a/a1 a- 4:7 !7 0 0 0 一 +7 0 0 11 -n- =s f f. s +[(h-umo-1) :7] f 3 1 1
-
-SUBSTITUTE
-GT   : min 22.4°c 20 min 30.1°c
-PRED : f 0 f litfsi electroetemperaturetestate30
-
-SUBSTITUTE
-GT   : grey + dull
-PRED : grey+dall 0min22.4℃ 20
-
-DELETE
-GT   : 1
-PRED : 
-
-SUBSTITUTE
-GT   : 23.1°c 40 min 31.5°c
-PRED : 30.1c 1min 23.1℃ 31.sc
-
-SUBSTITUTE
-GT   : 5 min 25.6°c 1 hr 32.0°c 2θ = 2.1° (low intens.) 10
-PRED : 40min 20=2.1°(low intens.) 5min ihr 25.6c 32.0c shoulder at 2#=4.7° 10min 1hr
-
-DELETE
-GT   : min 27.9°c 1 hr
-PRED : 
-
-SUBSTITUTE
-GT   : 32.6°c shoulder
-PRED : 32.6c 27.9c
+GT   : 2.1° (low intens.) 10 min 27.9°c 1 hr 30min 32.6°c shoulder
+PRED : 455. 5mg verified by: date date recorded by: naccarella 2/4/16 ian
 
 DELETE
 GT   : at 2θ = 4.7°

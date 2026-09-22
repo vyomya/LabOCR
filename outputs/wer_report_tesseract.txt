@@ -1,47 +1,107 @@
-WER: 0.9698 (96.98%)
-Substitutions: 138
-Deletions:     55
-Insertions:    0
-Hits:          6
+WER: 1.8643 (186.43%)
+Substitutions: 186
+Deletions:     0
+Insertions:    185
+Hits:          13
 
 === ERRORS ===
 
+INSERT
+GT   : 
+PRED : oo) as. “gf 3 i : oo 4 ) i : is g + a? | 9 << se f . 8 | | fas = q <x . ss bang o|
+
 SUBSTITUTE
 GT   : cont. from pg 56 page 57 project: li electrodeposition
-PRED : a “ a , efectely a ) suse |
+PRED : < + x a as q r a 9
 
-DELETE
-GT   : - glyme electrolytes june 4
-PRED : 
-
-SUBSTITUTE
-GT   : electrolyte 240604-b for stable
-PRED : clecbrele tsocor-b , shbe
+INSERT
+GT   : 
+PRED : “) is " oo ‘
 
 SUBSTITUTE
-GT   : plating at 30°c electrolyte: 1m litfsi in diglyme : etoh (4:1 v/v), 20 ml tot add 5 mol% 12-crown-4 as additive. stir 20 min → t @ 22.4°c, glovebox h₂o
-PRED : pling ! wore pee lt hit ten oe) | electolte: jn lt fst in igh lojhyme 2 etoh (4: vie) a = “bal bt md bs mel h we crown
+GT   : glyme electrolytes june 4 goal: screen electrolyte 240604-b for stable li plating
+PRED : . j <¢ ¢ 2 = “| ] ~ _~ ~ +
 
-DELETE
-GT   : <
-PRED : 
-
-SUBSTITUTE
-GT   : ppm working elec.: glassy c rde (0.3 cm²); ce: li foil; ref: ag/agcl -------------------------------------------------------------------------- deposition run 240604-b1 apply -0.45v vs ag/agcl, 90 min, ω = 1600 rpm j = 0.50 ma/cm² and 0.3 cm² $$\frac{0.5 \text{ ma}}{\text{cm}^2} \cdot 0.3 \text{ cm}^2
-PRED : ns additive. stir lomia > _ t@ 2246 | shvebox ho © ll ppm a werkim elec. + glssy cade (3.0): ce: li fil: | rob: an /an cl 8 a _—_ | moly ~ oy vs ay /as ci 1
-
-DELETE
-GT   : = 1.5 \text{ e-4 a}$$ t = 90
-PRED : 
+INSERT
+GT   : 
+PRED : | |: sa) y 8 fa) — ~<
 
 SUBSTITUTE
-GT   : = 5400 s q = 1.5e-4 a · 5400 s = 0.81 a·s = 0.81 c n = $\frac{q}{zf}$
-PRED : ws 100s pm | st 0,80 alem? and 0. bem® 0.5 ma o3em> > ise-4 a | - 8
+GT   : 30°c electrolyte: 1m litfsi in diglyme : etoh (4:1 v/v), 20 ml tot add 5 mol% 12-crown-4 as additive. stir 20 min → t @ 22.4°c, glovebox h₂o < 1 ppm working elec.: glassy c rde (0.3 cm²); ce: li foil; ref: ag/agcl -------------------------------------------------------------------------- deposition run 240604-b1 apply -0.45v vs ag/agcl, 90 min, ω
+PRED : > | pa v 5 w g 2 s| | g < — oo) ee qi < > | 8 0 2 s] “lg sg ee cme | jus ~ g} s | ee . . ™ gd] t- a y ce) | ae lie ore oa) eo}, a |s my os sd |
+
+INSERT
+GT   : 
+PRED : zz ian + q :
 
 SUBSTITUTE
-GT   : $\frac{0.81 \text{ c}}{96485 \text{ c/mol}}$ = $8.4 \text{ e-6 mol}$ $\frac{6.94 \text{ g li}}{\text{mol li}}$ = $5.8 \text{ e-5}$ $$1 e^- = 1 li^+$$ -------------------------------------------------------------------------- electrode temperature test: hot plate at 30°c 0 min 22.4°c
-PRED : oc gt bebe! 14h og | af 48s © joel nfl =~ ess sss ae sr | put 9 +e se li ‘ | \ ed nop 7 nee ee l:-tesi es ps os a
+GT   : 1600 rpm j
+PRED : 3 a) i"
 
-DELETE
-GT   : 20 min 30.1°c film looks grey + dull 1 min 23.1°c 40 min 31.5°c xrd min peak at 5 min 25.6°c 1 hr 32.0°c 2θ = 2.1° (low intens.) 10 min 27.9°c 1 hr 30min 32.6°c shoulder at 2θ = 4.7°
-PRED : 
+INSERT
+GT   : 
+PRED : an li ~ os y | 9 s —
+
+SUBSTITUTE
+GT   : 0.50 ma/cm² and 0.3 cm² $$\frac{0.5 \text{ ma}}{\text{cm}^2} \cdot 0.3 \text{ cm}^2
+PRED : 213 ae a — & \ 2 ® x o 8 oe
+
+INSERT
+GT   : 
+PRED : n q : | ao |\qom oc en | 4 sli 2 : q| 4 £ ny) ns wis | «| cq
+
+SUBSTITUTE
+GT   : 1.5 \text{ e-4 a}$$ t = 90 min = 5400
+PRED : — | | n f ols “| 1s lw u
+
+INSERT
+GT   : 
+PRED : se ss ni aay | z “a a) sh. ~~ a t/ _ mm ; af e fas tig) ial gs sad is ie 3 —_ ! om | oo n ~ ae . 8 > v a e | “ >= x) ah oo] aa 0 sis | sos so) 2 | * al a | | re
+
+SUBSTITUTE
+GT   : q
+PRED : |
+
+INSERT
+GT   : 
+PRED : ss) 8) 0 | 4 + pz] 8 ia 3s] |
+
+SUBSTITUTE
+GT   : 1.5e-4 a · 5400
+PRED : | \s | ’
+
+INSERT
+GT   : 
+PRED : 8
+
+SUBSTITUTE
+GT   : 0.81 a·s = 0.81
+PRED : < | ~ ¢
+
+INSERT
+GT   : 
+PRED : 4) += é x » as i s : tall | : j |< “8 x +) |
+
+SUBSTITUTE
+GT   : n
+PRED : x
+
+INSERT
+GT   : 
+PRED : ~s
+
+SUBSTITUTE
+GT   : $\frac{q}{zf}$
+PRED : =?
+
+INSERT
+GT   : 
+PRED : | o < q < ~~ } 4+- 9 2 an + 8 2}
+
+SUBSTITUTE
+GT   : $\frac{0.81 \text{ c}}{96485 \text{ c/mol}}$ = $8.4 \text{ e-6 mol}$ $\frac{6.94 \text{ g li}}{\text{mol li}}$
+PRED : 9 a s 5} |x v| 9 ss) jae ls slo — |! < <
+
+SUBSTITUTE
+GT   : $5.8 \text{ e-5}$ $$1 e^- = 1 li^+$$ -------------------------------------------------------------------------- electrode temperature test: hot plate at 30°c 0 min 22.4°c 20 min 30.1°c film looks grey + dull 1 min 23.1°c 40 min 31.5°c xrd min peak at 5 min 25.6°c 1 hr 32.0°c 2θ = 2.1° (low intens.) 10 min 27.9°c 1 hr 30min 32.6°c shoulder at 2θ = 4.7°
+PRED : 2 >| 8 — 3 oo 1a € [rs | iz x ‘1 19 np | | sis) 3 bf a < v re) oo = ~ s} §] 9} g ~o i my ol ) = a |: you se is + sh jt su _ [pom is s| 8 nh |= 90 “yf st taba ogres fe emer
